@@ -53,7 +53,7 @@ func NewSendToAddressCmd(asset_id, address string, amount int64) *SendToAddressC
 
 type AssetAddressValue struct {
 	Asset   string `json:"asset"`
-	Value   int    `json:"value"`
+	Value   int64    `json:"value"`
 	Address string `json:"address"`
 }
 
