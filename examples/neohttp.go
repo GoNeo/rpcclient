@@ -3,6 +3,7 @@ package main
 import (
 	"log"
 	"github.com/GoNeo/rpcclient"
+	"github.com/GoNeo/rpcclient/neojson"
 )
 
 func main() {
@@ -60,11 +61,32 @@ func main() {
 	//}
 	//log.Printf("sendToAddrResult : %v ", sendToAddrResult)
 
-
 	balance, err := client.GetBalance(asset_id)
 	if err != nil {
 		log.Fatal(err)
 	}
 	log.Printf("best Block hash: %v ", balance)
+
+	// send many
+	asset_address_values := []neojson.AssetAddressValue{}
+
+	asset_address_value1 := neojson.AssetAddressValue{
+		Asset:   asset_id,
+		Address: "AVtPp6Yc5iuJU8G6ht65i4nSyzdxG9NBiw",
+		Value:   2,
+	}
+	asset_address_values = append(asset_address_values, asset_address_value1)
+	asset_address_value2 := neojson.AssetAddressValue{
+		Asset:   asset_id,
+		Address: "AVtPp6Yc5iuJU8G6ht65i4nSyzdxG9NBiw",
+		Value:   3,
+	}
+	asset_address_values = append(asset_address_values, asset_address_value2)
+
+	sendManyResult, err := client.SendMany(&asset_address_values)
+	if err != nil {
+		log.Fatal(err)
+	}
+	log.Printf("send Many result: %v ", sendManyResult)
 
 }

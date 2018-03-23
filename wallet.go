@@ -126,6 +126,33 @@ func (c *Client) SendToAddress(asset_id, address string, amount int64) (*neojson
 	return c.SendToAddressAsync(asset_id, address, amount).Receive()
 }
 
+type FutureSendManyResult chan *response
+
+func (r FutureSendManyResult) Receive() (*neojson.SendManyResult, error) {
+	res, err := receiveFuture(r)
+	if err != nil {
+		return nil, err
+	}
+
+	// Unmarshal result as a string.
+	var sendToaddr neojson.SendManyResult
+	err = json.Unmarshal(res, &sendToaddr)
+	if err != nil {
+		return nil, err
+	}
+
+	return &sendToaddr, nil
+}
+
+func (c *Client) SendManyAsync(asset_address_values *[]neojson.AssetAddressValue) FutureSendManyResult {
+	cmd := neojson.NewSendManyCmd(asset_address_values)
+	return c.sendCmd(cmd)
+}
+
+func (c *Client) SendMany(asset_address_values *[]neojson.AssetAddressValue) (*neojson.SendManyResult, error) {
+	return c.SendManyAsync(asset_address_values).Receive()
+}
+
 // FutureGetBalanceResult is a future promise to deliver the result of a
 // GetBalanceAsync or GetBalanceMinConfAsync RPC invocation (or an applicable
 // error).

@@ -51,6 +51,22 @@ func NewSendToAddressCmd(asset_id, address string, amount int64) *SendToAddressC
 	}
 }
 
+type AssetAddressValue struct {
+	Asset   string `json:"asset"`
+	Value   int    `json:"value"`
+	Address string `json:"address"`
+}
+
+type SendManyCmd struct {
+	AddressAmounts *[]AssetAddressValue
+}
+
+func NewSendManyCmd(asset_address_values *[]AssetAddressValue) *SendManyCmd {
+	return &SendManyCmd{
+		asset_address_values,
+	}
+}
+
 // GetBalanceCmd defines the getbalance JSON-RPC command.
 type GetBalanceCmd struct {
 	AssetId string
@@ -75,5 +91,6 @@ func init() {
 	MustRegisterCmd("getrawtransaction", (*GetTransactionCmd)(nil), flags)
 	MustRegisterCmd("sendtoaddress", (*SendToAddressCmd)(nil), flags)
 	MustRegisterCmd("getbalance", (*GetBalanceCmd)(nil), flags)
+	MustRegisterCmd("sendmany", (*SendManyCmd)(nil), flags)
 
 }
