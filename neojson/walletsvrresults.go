@@ -24,8 +24,8 @@ type GetTransactionResult struct {
 		Verification string `json:"verification"`
 	} `json:"scripts"`
 	Blockhash     string `json:"blockhash"`
-	Confirmations int    `json:"confirmations"`
-	Blocktime     int    `json:"blocktime"`
+	Confirmations int64    `json:"confirmations"`
+	Blocktime     int64    `json:"blocktime"`
 }
 
 type SendToAddressResult struct {
