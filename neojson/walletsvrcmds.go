@@ -31,6 +31,19 @@ func NewGetTransactionCmd(txHash string, verbose *int) *GetTransactionCmd {
 	}
 }
 
+// GetApplicationLogCmd defines the getapplicationlog JSON-RPC command.
+type GetApplicationLogCmd struct {
+	Txid    string
+	Verbose *int `jsonrpcdefault:"1"`
+}
+
+func NewGetApplicationLogCmd(txHash string, verbose *int) *GetApplicationLogCmd {
+	return &GetApplicationLogCmd{
+		Txid:    txHash,
+		Verbose: verbose,
+	}
+}
+
 // SendToAddressCmd defines the sendtoaddress JSON-RPC command.
 type SendToAddressCmd struct {
 	AssetId string
@@ -89,6 +102,7 @@ func init() {
 
 	MustRegisterCmd("getnewaddress", (*GetNewAddressCmd)(nil), flags)
 	MustRegisterCmd("getrawtransaction", (*GetTransactionCmd)(nil), flags)
+	MustRegisterCmd("getapplicationlog", (*GetApplicationLogCmd)(nil), flags)
 	MustRegisterCmd("sendtoaddress", (*SendToAddressCmd)(nil), flags)
 	MustRegisterCmd("getbalance", (*GetBalanceCmd)(nil), flags)
 	MustRegisterCmd("sendmany", (*SendManyCmd)(nil), flags)

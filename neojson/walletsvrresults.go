@@ -28,6 +28,27 @@ type GetTransactionResult struct {
 	Blocktime     int64    `json:"blocktime"`
 }
 
+
+type GetApplicationLogResult struct {
+	GasConsumed   string `json:"gas_consumed"`
+	Notifications []struct {
+		Contract string `json:"contract"`
+		State    struct {
+			Type  string `json:"type"`
+			Value []struct {
+				Type  string `json:"type"`
+				Value string `json:"value"`
+			} `json:"value"`
+		} `json:"state"`
+	} `json:"notifications"`
+	Stack []struct {
+		Type  string `json:"type"`
+		Value string `json:"value"`
+	} `json:"stack"`
+	Txid    string `json:"txid"`
+	Vmstate string `json:"vmstate"`
+}
+
 type SendToAddressResult struct {
 	Txid       string        `json:"txid"`
 	Size       int           `json:"size"`

@@ -82,6 +82,32 @@ func (c *Client) GetRawTransaction(txID string) (*neojson.GetTransactionResult, 
 	return c.GetTransactionAsync(txID, &verbose).Receive()
 }
 
+type FutureGetApplicationLogResult chan *response
+
+func (r FutureGetApplicationLogResult) Receive() (*neojson.GetApplicationLogResult, error) {
+	res, err := receiveFuture(r)
+	if err != nil {
+		return nil, err
+	}
+
+	var getTx neojson.GetApplicationLogResult
+	err = json.Unmarshal(res, &getTx)
+	if err != nil {
+		return nil, err
+	}
+	return &getTx, nil
+}
+
+func (c *Client) GetApplicationLogAsync(txID string, verbose *int) FutureGetApplicationLogResult {
+	cmd := neojson.NewGetApplicationLogCmd(txID, verbose)
+	return c.sendCmd(cmd)
+}
+
+func (c *Client) GetApplicationLog(txID string) (*neojson.GetApplicationLogResult, error) {
+	verbose := 1
+	return c.GetApplicationLogAsync(txID, &verbose).Receive()
+}
+
 // FutureSendToAddressResult is a future promise to deliver the result of a
 // SendToAddressAsync RPC invocation (or an applicable error).
 type FutureSendToAddressResult chan *response
