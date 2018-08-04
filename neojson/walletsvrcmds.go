@@ -44,6 +44,25 @@ func NewGetApplicationLogCmd(txHash string, verbose *int) *GetApplicationLogCmd 
 	}
 }
 
+type InvokeFunctoinCmd struct {
+	ScriptHash string
+	MethodName string
+	Args       []InvokeFunctionArgs
+}
+
+type InvokeFunctionArgs struct {
+	Type  string `json:"type"`
+	Value string `json:"value"`
+}
+
+func NewInvokeFunctoinCmd(scriptHash string, methodName string, args []InvokeFunctionArgs) *InvokeFunctoinCmd {
+	return &InvokeFunctoinCmd{
+		ScriptHash: scriptHash,
+		MethodName: methodName,
+		Args:       args,
+	}
+}
+
 // SendToAddressCmd defines the sendtoaddress JSON-RPC command.
 type SendToAddressCmd struct {
 	AssetId string
@@ -103,6 +122,7 @@ func init() {
 	MustRegisterCmd("getnewaddress", (*GetNewAddressCmd)(nil), flags)
 	MustRegisterCmd("getrawtransaction", (*GetTransactionCmd)(nil), flags)
 	MustRegisterCmd("getapplicationlog", (*GetApplicationLogCmd)(nil), flags)
+	MustRegisterCmd("invokefunction", (*InvokeFunctoinCmd)(nil), flags)
 	MustRegisterCmd("sendtoaddress", (*SendToAddressCmd)(nil), flags)
 	MustRegisterCmd("getbalance", (*GetBalanceCmd)(nil), flags)
 	MustRegisterCmd("sendmany", (*SendManyCmd)(nil), flags)

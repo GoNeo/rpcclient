@@ -108,6 +108,31 @@ func (c *Client) GetApplicationLog(txID string) (*neojson.GetApplicationLogResul
 	return c.GetApplicationLogAsync(txID, &verbose).Receive()
 }
 
+type FutureInvokeFunctionResult chan *response
+
+func (r FutureInvokeFunctionResult) Receive() (*neojson.InvokeFunctionResult, error) {
+	res, err := receiveFuture(r)
+	if err != nil {
+		return nil, err
+	}
+
+	var result neojson.InvokeFunctionResult
+	err = json.Unmarshal(res, &result)
+	if err != nil {
+		return nil, err
+	}
+	return &result, nil
+}
+
+func (c *Client) InvokeFunctionAsync(scriptHash, methodName string, args []neojson.InvokeFunctionArgs) FutureInvokeFunctionResult {
+	cmd := neojson.NewInvokeFunctoinCmd(scriptHash, methodName, args)
+	return c.sendCmd(cmd)
+}
+
+func (c *Client) InvokeFunction(scriptHash, methodName string, args []neojson.InvokeFunctionArgs) (*neojson.InvokeFunctionResult, error) {
+	return c.InvokeFunctionAsync(scriptHash, methodName, args).Receive()
+}
+
 // FutureSendToAddressResult is a future promise to deliver the result of a
 // SendToAddressAsync RPC invocation (or an applicable error).
 type FutureSendToAddressResult chan *response

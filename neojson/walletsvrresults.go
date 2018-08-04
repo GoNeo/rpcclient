@@ -49,6 +49,17 @@ type GetApplicationLogResult struct {
 	Vmstate string `json:"vmstate"`
 }
 
+
+type InvokeFunctionResult struct {
+	GasConsumed string `json:"gas_consumed"`
+	Script      string `json:"script"`
+	Stack       []struct {
+		Type  string `json:"type"`
+		Value string `json:"value"`
+	} `json:"stack"`
+	State string `json:"state"`
+}
+
 type SendToAddressResult struct {
 	Txid       string        `json:"txid"`
 	Size       int           `json:"size"`
