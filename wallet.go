@@ -177,6 +177,33 @@ func (c *Client) SendToAddress(asset_id, address string, amount int64) (*neojson
 	return c.SendToAddressAsync(asset_id, address, amount).Receive()
 }
 
+type FutureSendFromResult chan *response
+
+func (r FutureSendFromResult) Receive() (*neojson.SendToAddressResult, error) {
+	res, err := receiveFuture(r)
+	if err != nil {
+		return nil, err
+	}
+
+	// Unmarshal result as a string.
+	var sendToaddr neojson.SendToAddressResult
+	err = json.Unmarshal(res, &sendToaddr)
+	if err != nil {
+		return nil, err
+	}
+
+	return &sendToaddr, nil
+}
+
+func (c *Client) SendFromAsync(asset_id, from, to string, amount int64) FutureSendFromResult {
+	cmd := neojson.NewSendFromCmd(asset_id, from, to, amount)
+	return c.sendCmd(cmd)
+}
+
+func (c *Client) SendFrom(asset_id, from, to string, amount int64) (*neojson.SendToAddressResult, error) {
+	return c.SendFromAsync(asset_id, from, to, amount).Receive()
+}
+
 type FutureSendManyResult chan *response
 
 func (r FutureSendManyResult) Receive() (*neojson.SendManyResult, error) {

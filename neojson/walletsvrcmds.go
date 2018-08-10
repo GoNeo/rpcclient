@@ -63,6 +63,22 @@ func NewInvokeFunctoinCmd(scriptHash string, methodName string, args []InvokeFun
 	}
 }
 
+type SendFromCmd struct {
+	AssetId string
+	From    string
+	To      string
+	Amount  int64
+}
+
+func NewSendFromCmd(asset_id, from, to string, amount int64) *SendFromCmd {
+	return &SendFromCmd{
+		AssetId: asset_id,
+		From:    from,
+		To:      to,
+		Amount:  amount,
+	}
+}
+
 // SendToAddressCmd defines the sendtoaddress JSON-RPC command.
 type SendToAddressCmd struct {
 	AssetId string
@@ -126,5 +142,6 @@ func init() {
 	MustRegisterCmd("sendtoaddress", (*SendToAddressCmd)(nil), flags)
 	MustRegisterCmd("getbalance", (*GetBalanceCmd)(nil), flags)
 	MustRegisterCmd("sendmany", (*SendManyCmd)(nil), flags)
+	MustRegisterCmd("sendfrom", (*SendFromCmd)(nil), flags)
 
 }
