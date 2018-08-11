@@ -67,10 +67,10 @@ type SendFromCmd struct {
 	AssetId string
 	From    string
 	To      string
-	Amount  int64
+	Amount  float64
 }
 
-func NewSendFromCmd(asset_id, from, to string, amount int64) *SendFromCmd {
+func NewSendFromCmd(asset_id, from, to string, amount float64) *SendFromCmd {
 	return &SendFromCmd{
 		AssetId: asset_id,
 		From:    from,

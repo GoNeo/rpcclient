@@ -195,12 +195,12 @@ func (r FutureSendFromResult) Receive() (*neojson.SendToAddressResult, error) {
 	return &sendToaddr, nil
 }
 
-func (c *Client) SendFromAsync(asset_id, from, to string, amount int64) FutureSendFromResult {
+func (c *Client) SendFromAsync(asset_id, from, to string, amount float64) FutureSendFromResult {
 	cmd := neojson.NewSendFromCmd(asset_id, from, to, amount)
 	return c.sendCmd(cmd)
 }
 
-func (c *Client) SendFrom(asset_id, from, to string, amount int64) (*neojson.SendToAddressResult, error) {
+func (c *Client) SendFrom(asset_id, from, to string, amount float64) (*neojson.SendToAddressResult, error) {
 	return c.SendFromAsync(asset_id, from, to, amount).Receive()
 }
 
