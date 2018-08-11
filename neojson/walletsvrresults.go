@@ -37,7 +37,7 @@ type GetApplicationLogResult struct {
 			Type  string `json:"type"`
 			Value []struct {
 				Type  string `json:"type"`
-				Value string `json:"value"`
+				Value interface{} `json:"value"`
 			} `json:"value"`
 		} `json:"state"`
 	} `json:"notifications"`
